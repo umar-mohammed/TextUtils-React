@@ -1,32 +1,39 @@
 import React, { useState } from 'react'
 
 export default function TextForm(props) {
-    const uppercaseClick = () => {
-        setText(text.toUpperCase())
-    }
-    const lowercaseClick = () => {
-        setText(text.toLowerCase())
-    }
-    const camelcaseClick = () => {
-        console.log("camelcaseClick " + text);
-        let t = camelize(text);
-        console.log("converted camelcaseClick " + t);
-        setText(t)
-    }
     const handleOnChange = (event) => {
         // console.log("on Change")
         setText(event.target.value)
     }
 
-    const handleOnClick = () => {
-        // console.log("on click")
+    const uppercaseClick = () => {
+        setText(text.toUpperCase())
+    }
+
+    const lowercaseClick = () => {
+        setText(text.toLowerCase())
+    }
+
+    const camelcaseClick = () => {
+        // console.log("camelcaseClick " + text);
+        let t = text.replace(/\s+(.)/g, function (match, group) {
+            return group.toUpperCase()
+        });
+        // console.log("converted camelcaseClick " + t);
+        setText(t)
+    }
+
+    const clearTextClick = () => {
         setText("")
     }
 
-    function camelize(str) {
-        return str.replace(/\s+(.)/g, function (match, group) { 
-          return group.toUpperCase()  
-        });
+    const copyTextClick = () => {
+        navigator.clipboard.writeText(text);
+    }
+
+    const removeExtraSpacesClick = () => {
+        let newText = text.split(/[ ]+/);
+        setText(newText.join(" "))
     }
 
     const [text, setText] = useState('Enter Text here');
@@ -35,11 +42,16 @@ export default function TextForm(props) {
             <div className="container">
                 <h1>{props.heading}</h1>
                 <div className="mb-3">
-                    <textarea className="form-control" value={text} onChange={handleOnChange} onClick={handleOnClick} id="myBox" rows="10"></textarea>
+                    {/* <textarea className="form-control" value={text} onChange={handleOnChange} onClick={clearTextClick} id="myBox" rows="10"></textarea> */}
+                    <textarea className="form-control" value={text} onChange={handleOnChange} id="myBox" rows="10"></textarea>
                 </div>
-                <button className='btn btn-primary mx-2' onClick={uppercaseClick}>Convert to Uppercase</button>
-                <button className='btn btn-primary mx-2' onClick={lowercaseClick}>Convert to Lowercase</button>
-                <button className='btn btn-primary mx-2' onClick={camelcaseClick}>Convert to Camelcase</button>
+                <button className='btn btn-primary mx-1' onClick={uppercaseClick}>Convert to Uppercase</button>
+                <button className='btn btn-primary mx-1' onClick={lowercaseClick}>Convert to Lowercase</button>
+                <button className='btn btn-primary mx-1' onClick={camelcaseClick}>Convert to Camelcase</button>
+                <button className='btn btn-primary mx-1' onClick={copyTextClick}>Copy Text</button>
+                <button className='btn btn-primary mx-1' onClick={removeExtraSpacesClick}>Remove Extra Spaces</button>
+                <button className='btn btn-danger mx-1' onClick={clearTextClick}>Clear Text</button>
+
             </div>
             <div className="container my-3">
                 <h2>Your text summery:</h2>
