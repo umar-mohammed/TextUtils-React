@@ -43,6 +43,8 @@ export default function TextForm(props) {
     }
 
     const [text, setText] = useState('');
+    let wordLength = text.split(/\s+/).filter((element) =>{return element.length !== 0}).length;
+    let isbuttonDisbale = (wordLength===0);
     return (
         <>
             <div className="container" style={{ color: props.mode === 'dark' ? 'white' : 'black' }}>
@@ -51,20 +53,21 @@ export default function TextForm(props) {
                     {/* <textarea className="form-control" value={text} onChange={handleOnChange} onClick={clearTextClick} id="myBox" rows="10"></textarea> */}
                     <textarea className="form-control" value={text} onChange={handleOnChange} style={{ backgroundColor: props.mode === 'dark' ? 'grey' : 'white', color: props.mode === 'dark' ? 'white' : 'black' }} id="myBox" rows="10"></textarea>
                 </div>
-                <button className='btn btn-primary mx-1' onClick={uppercaseClick}>Convert to Uppercase</button>
-                <button className='btn btn-primary mx-1' onClick={lowercaseClick}>Convert to Lowercase</button>
-                <button className='btn btn-primary mx-1' onClick={camelcaseClick}>Convert to Camelcase</button>
-                <button className='btn btn-primary mx-1' onClick={copyTextClick}>Copy Text</button>
-                <button className='btn btn-primary mx-1' onClick={removeExtraSpacesClick}>Remove Extra Spaces</button>
-                <button className='btn btn-danger mx-1' onClick={clearTextClick}>Clear Text</button>
+                <button disabled={isbuttonDisbale} className='btn btn-primary mx-1 my-1' onClick={uppercaseClick}>Convert to Uppercase</button>
+                <button disabled={isbuttonDisbale} className='btn btn-primary mx-1 my-1' onClick={lowercaseClick}>Convert to Lowercase</button>
+                <button disabled={isbuttonDisbale} className='btn btn-primary mx-1 my-1' onClick={camelcaseClick}>Convert to Camelcase</button>
+                <button disabled={isbuttonDisbale} className='btn btn-primary mx-1 my-1' onClick={removeExtraSpacesClick}>Remove Extra Spaces</button>
+                <button disabled={isbuttonDisbale} className='btn btn-primary mx-1 my-1' onClick={copyTextClick}>Copy Text</button>
+                <button disabled={isbuttonDisbale} className='btn btn-danger mx-1 my-1' onClick={clearTextClick}>Clear Text</button>
 
             </div>
             <div className="container my-3" style={{ color: props.mode === 'dark' ? 'white' : 'black' }}>
                 <h2>Your text summery:</h2>
-                <p>{text.split(" ").length} words and {text.length} characters</p>
-                <p>{0.008 * text.split(" ").length} Minutes to read</p>
+                 
+                <p>{wordLength} words and {text.length} characters</p>
+                <p>{0.008 * wordLength} Minutes to read</p>
                 <h2>Preview:</h2>
-                <p>{text.length > 0 ? text : "Enter something in text box to preview here"}</p>
+                <p>{text.length > 0 ? text : "Nothing to preview"}</p>
             </div>
         </>
     )
